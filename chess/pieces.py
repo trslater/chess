@@ -5,7 +5,7 @@ from math import inf
 @total_ordering
 class Piece:
     __slots__ = ("VALUE",)
-    
+
     def __lt__(self, other) -> bool:
         """Needed for `total_ordering` and more generally for comparing
         value of pieces"""
@@ -79,3 +79,8 @@ class King(Piece):
         return ("  +\n"
                 "( | )\n"
                 "-----")
+
+
+def starting() -> tuple[Piece]:
+    return (Pawn(), Pawn(), Pawn(), Pawn(), Pawn(), Pawn(), Pawn(), Pawn(),
+            Rook(), Knight(), Bishop(), King(), Queen(), Bishop(), Knight, Rook())
