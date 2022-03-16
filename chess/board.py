@@ -1,14 +1,29 @@
-def rank_and_file_from_indices(i: int, j: int) -> tuple[int, str]:
-    if i < 0 or i > 7 or j < 0 or j > 7:
-        raise ValueError()
+from dataclasses import dataclass
+from functools import cached_property
 
-    return (8 - i), chr(65 + j)
+from .pieces import Piece
 
-def indices_from_rank_and_file(rank: int, file: str) -> tuple[int, int]:
-    # Do conversions up front, because it is easier to check indices
-    i, j = (8 - rank), ord(file) - 65
-    
-    if i < 0 or i > 7 or j < 0 or j > 7:
-        raise ValueError()
 
-    return i, j
+@dataclass(frozen=True)
+class Square:
+    rank: int
+    file: str
+
+    @cached_property
+    def row(self):
+        return 8 - self.rank
+
+    @cached_property
+    def column(self):
+        return ord(self.file) - 65
+
+    @classmethod
+    def from_indices(cls, i: int, j: int):
+        return cls((8 - i), chr(65 + j))
+
+    def __post_init__(self) -> None:
+        if self.rank < 1 or self.rank > 8:
+            raise ValueError("Rank out of range")
+
+        if self.file < "A" or self.file > "H":
+            raise ValueError("File out of range")
